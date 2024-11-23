@@ -45,18 +45,22 @@ const TodoList = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <HeaderTodoList todosLength={todos.length} />
-      <AddTodoInput
-        addTodo={addTodo}
-        newTodo={newTodo}
-        setNewTodo={setNewTodo}
-      />
       <FlatList
         data={todos}
         renderItem={renderTodoItem}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
+        ListHeaderComponent={
+          <>
+            <HeaderTodoList todosLength={todos.length} />
+            <AddTodoInput
+              addTodo={addTodo}
+              newTodo={newTodo}
+              setNewTodo={setNewTodo}
+            />
+          </>
+        }
         ListEmptyComponent={<EmptyComponent></EmptyComponent>}
       />
     </SafeAreaView>

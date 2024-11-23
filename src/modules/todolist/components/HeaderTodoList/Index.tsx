@@ -1,21 +1,19 @@
-import {
-  StyleSheet,
-} from "react-native";
+import { StyleSheet } from 'react-native';
 import { View, Text } from '@/elements';
-import { COLORS } from "@/ui/colors";
-import { size } from "@/ui/size";
+import { COLORS } from '@/ui/colors';
+import { size } from '@/ui/size';
 
 /* TYPES */
 type Props = {
-  todosLength: number
+  todosLength: number;
 };
 
 const HeaderTodoList: React.FC<Props> = ({ todosLength }) => {
   return (
     <View style={styles.header}>
-        <Text style={styles.title}>Todo</Text>
-        <Text style={styles.subtitle}>{todosLength} tasks</Text>
-      </View>
+      <Text style={styles.title}>Todo</Text>
+      <Text style={styles.subtitle}>{todosLength} tasks</Text>
+    </View>
   );
 };
 
@@ -23,7 +21,6 @@ export default HeaderTodoList;
 
 const styles = StyleSheet.create({
   header: {
-    paddingHorizontal: size(12),
     paddingTop: size(10),
     paddingBottom: size(5),
   },
@@ -38,4 +35,4 @@ const styles = StyleSheet.create({
     color: COLORS.doveGray,
     fontWeight: '500',
   },
-})
+});

@@ -1,12 +1,10 @@
 /* REACT */
-import React, { Dispatch, SetStateAction, useMemo } from "react";
-import {
-  StyleSheet,
-} from "react-native";
-import { COLORS } from "@/ui/colors";
-import { TextInput, View, Text } from "@/elements";
-import { Pressable } from "@/elements/Pressable";
-import { size } from "@/ui/size";
+import React, { Dispatch, SetStateAction, useMemo } from 'react';
+import { StyleSheet } from 'react-native';
+import { COLORS } from '@/ui/colors';
+import { TextInput, View, Text } from '@/elements';
+import { Pressable } from '@/elements/Pressable';
+import { size } from '@/ui/size';
 
 /* TYPES */
 type Props = {
@@ -15,32 +13,36 @@ type Props = {
   addTodo: () => void;
 };
 
-const ComponentName: React.FC<Props> = ({newTodo, setNewTodo, addTodo}) => {
+const ComponentName: React.FC<Props> = ({ newTodo, setNewTodo, addTodo }) => {
   const isDisabled = useMemo(() => {
-    return !newTodo.trim()
+    return !newTodo.trim();
   }, [newTodo]);
 
   return (
     <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          value={newTodo}
-          onChangeText={setNewTodo}
-          placeholder="Add a new task"
-          returnKeyType="done"
-          onSubmitEditing={addTodo}
-          
-        />
-        <Pressable
-          style={[styles.addButton, isDisabled && styles.addButtonDisabled]}
-          onPress={addTodo}
-          disabled={isDisabled}
+      <TextInput
+        style={styles.input}
+        value={newTodo}
+        onChangeText={setNewTodo}
+        placeholder="Add a new task"
+        returnKeyType="done"
+        onSubmitEditing={addTodo}
+      />
+      <Pressable
+        style={[styles.addButton, isDisabled && styles.addButtonDisabled]}
+        onPress={addTodo}
+        disabled={isDisabled}
+      >
+        <Text
+          style={[
+            styles.addButtonText,
+            isDisabled && styles.addButtonTextDisabled,
+          ]}
         >
-          <Text style={[styles.addButtonText, isDisabled && styles.addButtonTextDisabled]}>
-            Add
-          </Text>
-        </Pressable>
-      </View>
+          Add
+        </Text>
+      </Pressable>
+    </View>
   );
 };
 
@@ -51,7 +53,6 @@ const heightInputBlock = 50;
 const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
-    paddingHorizontal: size(12),
     paddingVertical: size(8),
     gap: size(6),
   },
@@ -101,4 +102,4 @@ const styles = StyleSheet.create({
   addButtonTextDisabled: {
     color: COLORS.disabledButton,
   },
-})
+});
