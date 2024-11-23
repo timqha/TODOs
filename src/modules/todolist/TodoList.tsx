@@ -8,6 +8,7 @@ import { size } from "@/ui/size";
 
 import { Todo } from './types'
 import TodoItem from "./components/TodoItem";
+import HeaderTodoList from "./components/HeaderTodoList/Index";
 
 const TodoList = () => {
   const todos: Todo[] = [
@@ -22,6 +23,7 @@ const TodoList = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <HeaderTodoList todosLength={todos.length} />
       <FlatList
         data={todos}
         renderItem={renderTodoItem}
