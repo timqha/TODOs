@@ -1,11 +1,8 @@
-import React from "react";
-import {
-  StyleSheet,
-} from "react-native";
-import { View, Text } from '@/elements'
-import { COLORS } from "@/ui/colors";
-import { size } from "@/ui/size";
-
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { View, Text } from '@/elements';
+import { COLORS } from '@/ui/colors';
+import { size } from '@/ui/size';
 
 const EmptyComponent = () => {
   return (
@@ -33,4 +30,4 @@ const styles = StyleSheet.create({
     fontSize: size(7),
     color: COLORS.silverChalice,
   },
-})
+});

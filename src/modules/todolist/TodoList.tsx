@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useReducer, useState } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { SafeAreaView, Text, FlatList, View } from '@/elements';
@@ -11,21 +11,27 @@ import TodoItem from './components/TodoItem';
 import HeaderTodoList from './components/HeaderTodoList';
 import AddTodoInput from './components/AddTodoInput';
 import { useSharedValue } from 'react-native-reanimated';
+import { initialStore, reducerTodo, ACTIONS } from './store/todo';
 
 const TodoList = () => {
   const [newTodo, setNewTodo] = useState('');
+  const [state, dispatch] = useReducer(reducerTodo, initialStore);
 
-  const todos: Todo[] = [
-    { completed: false, text: 'Wash the car', id: '1' },
-    { completed: true, text: 'Mow the lawn', id: '2' },
-    { completed: false, text: 'Do the washing-up', id: '3' },
-  ];
+  const addTodo = () => {
+    const trimNewTodo = newTodo.trim();
+    if (trimNewTodo) {
+      dispatch({ type: ACTIONS.ADD_TASK, payload: trimNewTodo });
+      setNewTodo('');
+    }
+  };
 
-  const addTodo = () => {};
+  const toggleTodo = (itemID: string) => {
+    dispatch({ type: ACTIONS.CHECKED_TASK, taskID: itemID });
+  };
 
-  const toggleTodo = (itemID: string) => {};
-
-  const deleteTodo = (itemID: string) => {};
+  const deleteTodo = (itemID: string) => {
+    dispatch({ type: ACTIONS.REMOVE_TASK, taskID: itemID });
+  };
 
   const fadeAnim = useSharedValue(1);
 
@@ -46,14 +52,14 @@ const TodoList = () => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={todos}
+        data={state.tasks}
         renderItem={renderTodoItem}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <>
-            <HeaderTodoList todosLength={todos.length} />
+            <HeaderTodoList todosLength={state.tasks.length} />
             <AddTodoInput
               addTodo={addTodo}
               newTodo={newTodo}
