@@ -1,27 +1,37 @@
 import { useCallback, useReducer, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Keyboard } from 'react-native';
 
-import { SafeAreaView, Text, FlatList, View } from '@/elements';
-import { COLORS } from '@/ui/colors';
+import { SafeAreaView, FlatList } from '@/elements';
 import EmptyComponent from './components/EmptyComponent';
 import { size } from '@/ui/size';
 
-import { Todo } from './types';
 import TodoItem from './components/TodoItem';
 import HeaderTodoList from './components/HeaderTodoList';
 import AddTodoInput from './components/AddTodoInput';
-import { useSharedValue } from 'react-native-reanimated';
+import {
+  useSharedValue,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
 import { initialStore, reducerTodo, ACTIONS } from './store/todo';
 
-const TodoList = () => {
-  const [newTodo, setNewTodo] = useState('');
-  const [state, dispatch] = useReducer(reducerTodo, initialStore);
+import { Todo } from './types';
 
-  const addTodo = () => {
+const TodoList = () => {
+  const [state, dispatch] = useReducer(reducerTodo, initialStore);
+  const fadeAnim = useSharedValue(1);
+
+  const addTodo = (newTodo: string) => {
     const trimNewTodo = newTodo.trim();
     if (trimNewTodo) {
       dispatch({ type: ACTIONS.ADD_TASK, payload: trimNewTodo });
-      setNewTodo('');
+
+      Keyboard.dismiss();
+
+      fadeAnim.value = withSequence(
+        withTiming(0, { duration: 0 }),
+        withTiming(1, { duration: 300 }),
+      );
     }
   };
 
@@ -33,10 +43,8 @@ const TodoList = () => {
     dispatch({ type: ACTIONS.REMOVE_TASK, taskID: itemID });
   };
 
-  const fadeAnim = useSharedValue(1);
-
   const renderTodoItem = useCallback(
-    ({ item, index }: { item: Todo; index: number }) => {
+    ({ item }: { item: Todo }) => {
       return (
         <TodoItem
           deleteTodo={deleteTodo}
@@ -50,7 +58,7 @@ const TodoList = () => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView>
       <FlatList
         data={state.tasks}
         renderItem={renderTodoItem}
@@ -60,11 +68,7 @@ const TodoList = () => {
         ListHeaderComponent={
           <>
             <HeaderTodoList todosLength={state.tasks.length} />
-            <AddTodoInput
-              addTodo={addTodo}
-              newTodo={newTodo}
-              setNewTodo={setNewTodo}
-            />
+            <AddTodoInput addTodo={addTodo} />
           </>
         }
         ListEmptyComponent={<EmptyComponent></EmptyComponent>}
@@ -76,10 +80,6 @@ const TodoList = () => {
 export default TodoList;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.alabaster,
-  },
   listContainer: {
     paddingHorizontal: size(12),
     paddingTop: size(4),

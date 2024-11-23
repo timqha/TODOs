@@ -1,5 +1,11 @@
 /* REACT */
-import React, { Dispatch, SetStateAction, useMemo } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 import { StyleSheet } from 'react-native';
 import { COLORS } from '@/ui/colors';
 import { TextInput, View, Text } from '@/elements';
@@ -8,12 +14,18 @@ import { size } from '@/ui/size';
 
 /* TYPES */
 type Props = {
-  newTodo: string;
-  setNewTodo: Dispatch<SetStateAction<string>>;
-  addTodo: () => void;
+  addTodo: (newTodo: string) => void;
 };
 
-const ComponentName: React.FC<Props> = ({ newTodo, setNewTodo, addTodo }) => {
+const ComponentName: React.FC<Props> = ({ addTodo }) => {
+  const [newTodo, setNewTodo] = useState('');
+
+  const _addTodo = useCallback(() => {
+    const stored = newTodo;
+    addTodo(stored);
+    setNewTodo('');
+  }, [newTodo]);
+
   const isDisabled = useMemo(() => {
     return !newTodo.trim();
   }, [newTodo]);
@@ -26,11 +38,11 @@ const ComponentName: React.FC<Props> = ({ newTodo, setNewTodo, addTodo }) => {
         onChangeText={setNewTodo}
         placeholder="Add a new task"
         returnKeyType="done"
-        onSubmitEditing={addTodo}
+        onSubmitEditing={_addTodo}
       />
       <Pressable
         style={[styles.addButton, isDisabled && styles.addButtonDisabled]}
-        onPress={addTodo}
+        onPress={_addTodo}
         disabled={isDisabled}
       >
         <Text
