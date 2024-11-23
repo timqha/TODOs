@@ -16,11 +16,7 @@ type Action =
   | { type: typeof ACTIONS.CHECKED_TASK; taskID: Todo['id'] };
 
 const initialStore: State = {
-  tasks: [
-    { completed: false, text: 'Wash the car', id: '1' },
-    { completed: true, text: 'Mow the lawn', id: '2' },
-    { completed: false, text: 'Do the washing-up', id: '3' },
-  ],
+  tasks: [],
 };
 
 function reducerTodo(state: State, action: Action): State {
