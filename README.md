@@ -62,3 +62,7 @@ Expo, react-native-reanimated, @testing-library/react-native
 
 - Jest: Version ^29.7.0. A comprehensive testing framework that ensures the reliability of the app by running unit tests.
 - @testing-library/react-native: Version ^12.8.1. Simplifies testing React Native components by providing utilities that encourage good testing practices.
+
+![screenshot empty](SCREENSHOTS/TODO1.png)
+
+![screenshot with tasks](SCREENSHOTS/TODO2.png)
