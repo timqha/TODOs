@@ -1,6 +1,9 @@
 import { memo, useCallback } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import Animated, { interpolate } from 'react-native-reanimated';
+import Animated, {
+  useAnimatedStyle,
+  withTiming,
+} from 'react-native-reanimated';
 import { Swipeable } from 'react-native-gesture-handler';
 
 import { Todo } from '../../types';
@@ -33,20 +36,21 @@ const TodoItem: React.FC<Props> = ({
     [deleteTodo],
   );
 
-  return (
-    <Animated.View
-      style={[
-        styles.todoItemContainer,
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: fadeAnim.value,
+      transform: [
         {
-          opacity: fadeAnim.value,
-          transform: [
-            {
-              translateY: interpolate(fadeAnim.value, [0, 1], [50, 0]),
-            },
-          ],
+          translateY: withTiming(fadeAnim.value === 1 ? 0 : 50, {
+            duration: 300,
+          }),
         },
-      ]}
-    >
+      ],
+    };
+  });
+
+  return (
+    <Animated.View style={[styles.todoItemContainer, animatedStyle]}>
       <Swipeable
         renderRightActions={() => renderRightActions(item.id)}
         overshootRight={false}
